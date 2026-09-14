@@ -2,7 +2,6 @@ using System.Text.Json.Serialization;
 using Azure.Identity;
 using FrituurTwiel.Products.Domain.Services;
 using FrituurTWiel.Products.Persistence;
-using FrituurTWiel.Products.Domain.Services;
 using FrituurTWiel.Products.Domain.Services.Interfaces;
 using FrituurTWiel.Products.Persistence.DataModel;
 using FrituurTWiel.Products.Persistence.Interfaces;
@@ -18,6 +17,11 @@ builder.Services.AddControllers().AddJsonOptions(opt =>
     opt.JsonSerializerOptions.Converters.Add(
         new JsonStringEnumConverter());
 });
+
+builder.Configuration.AddAzureKeyVault( 
+    new Uri("https://frituur-t-wiel-keyvault.vault.azure.net/"), 
+    new DefaultAzureCredential() 
+);
 
 
 builder.Services.AddDbContext<FrituurTWielDbContext>(options =>
@@ -46,11 +50,16 @@ var app = builder.Build();
 
 app.MapControllers();
 
-if (app.Environment.IsDevelopment()){
+ app.MapOpenApi();
+ app.MapScalarApiReference();
+
+if (app.Environment.IsDevelopment())
+{
     app.UseExceptionHandler("/error-development");
-    app.MapOpenApi();
-    app.MapScalarApiReference();
-} else {
+   
+}
+else
+{
     app.UseExceptionHandler("/error");
 }
 

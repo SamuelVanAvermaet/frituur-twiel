@@ -1,3 +1,4 @@
+using Azure.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Design;
 using Microsoft.Extensions.Configuration;
@@ -10,12 +11,13 @@ public class FrituurTWielDbContextFactory : IDesignTimeDbContextFactory<FrituurT
     {
         var basePath = Path.Combine(Directory.GetCurrentDirectory(), "..", "FrituurTWiel.Products.Api");
 
-
+        
 
         var configuration = new ConfigurationBuilder()
             .SetBasePath(basePath)
             .AddJsonFile("appsettings.json", optional: false)
             .AddJsonFile("appsettings.Development.json", optional: true)
+            .AddAzureKeyVault(new Uri("https://frituur-t-wiel-keyvault.vault.azure.net/"), new DefaultAzureCredential())
             .Build();
 
         var connectionString = configuration.GetConnectionString("DefaultConnection");
