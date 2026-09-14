@@ -1,0 +1,17 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net10.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\Shared\FrituurTWiel.Shared.Contracts\FrituurTWiel.Shared.Contracts.csproj" />
+    <ProjectReference Include="..\FrituurTWiel.Products.Api.Contracts\FrituurTWiel.Products.Api.Contracts.csproj" />
+    <ProjectReference Include="..\FrituurTWiel.Products.Domain.Model\FrituurTWiel.Products.Domain.Model.csproj" />
+    <ProjectReference Include="..\FrituurTWiel.Products.Persistence.DataModel\FrituurTWiel.Products.Persistence.DataModel.csproj" />
+    <ProjectReference Include="..\FrituurTWiel.Products.Persistence\FrituurTWiel.Products.Persistence.csproj" />
+  </ItemGroup>
+
+</Project>
