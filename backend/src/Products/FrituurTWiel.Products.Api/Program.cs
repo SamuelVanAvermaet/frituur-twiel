@@ -7,6 +7,9 @@ using FrituurTWiel.Products.Domain.Services.Interfaces;
 using FrituurTWiel.Products.Persistence.DataModel;
 using FrituurTWiel.Products.Persistence.Interfaces;
 using Microsoft.EntityFrameworkCore;
+using Scalar.AspNetCore;
+using Microsoft.OpenApi;
+using System.Text.Json.Nodes;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -24,15 +27,31 @@ builder.Services.AddDbContext<FrituurTWielDbContext>(options =>
 builder.Services.AddScoped<IProductService, ProductService>();
 builder.Services.AddScoped<IProductRepository, ProductRepository>();
 
-
+builder.Services.AddOpenApi(options =>
+{
+    options.AddSchemaTransformer((schema, context, cancellationToken) =>
+    {
+        if (context.JsonTypeInfo.Type.IsEnum)
+        {
+            schema.Type = JsonSchemaType.String;
+            schema.Enum = Enum.GetNames(context.JsonTypeInfo.Type)
+                .Select(name => (JsonNode)name)
+                .ToList();
+        }
+        return Task.CompletedTask;
+    });
+});
 
 var app = builder.Build();
 
 app.MapControllers();
 
-if (app.Environment.IsDevelopment())
+if (app.Environment.IsDevelopment()){
     app.UseExceptionHandler("/error-development");
-else
+    app.MapOpenApi();
+    app.MapScalarApiReference();
+} else {
     app.UseExceptionHandler("/error");
+}
 
 app.Run();
