@@ -18,9 +18,9 @@ builder.Services.AddControllers().AddJsonOptions(opt =>
         new JsonStringEnumConverter());
 });
 
-builder.Configuration.AddAzureKeyVault( 
-    new Uri("https://frituur-t-wiel-keyvault.vault.azure.net/"), 
-    new DefaultAzureCredential() 
+builder.Configuration.AddAzureKeyVault(
+    new Uri("https://frituur-t-wiel-keyvault.vault.azure.net/"),
+    new DefaultAzureCredential()
 );
 
 
@@ -50,13 +50,14 @@ var app = builder.Build();
 
 app.MapControllers();
 
- app.MapOpenApi();
- app.MapScalarApiReference();
 
 if (app.Environment.IsDevelopment())
 {
+
+    app.MapOpenApi();
+    app.MapScalarApiReference();
     app.UseExceptionHandler("/error-development");
-   
+
 }
 else
 {
