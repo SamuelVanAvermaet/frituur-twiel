@@ -1,0 +1,6 @@
+@FrituurTWiel.Orders.Api_HostAddress = http://localhost:5078
+
+GET {{FrituurTWiel.Orders.Api_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###

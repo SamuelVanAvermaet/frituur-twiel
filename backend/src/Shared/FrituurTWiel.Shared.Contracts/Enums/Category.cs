@@ -1,4 +1,7 @@
+using System.Text.Json.Serialization;
+
 namespace FrituurTWiel.Shared.Contracts.Enums;
+[JsonConverter(typeof(JsonStringEnumConverter))]
 public enum Category
 {
     SAUS,

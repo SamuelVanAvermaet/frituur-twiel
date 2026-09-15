@@ -11,12 +11,12 @@ using Microsoft.OpenApi;
 using System.Text.Json.Nodes;
 
 var builder = WebApplication.CreateBuilder(args);
-
-builder.Services.AddControllers().AddJsonOptions(opt =>
-{
-    opt.JsonSerializerOptions.Converters.Add(
-        new JsonStringEnumConverter());
-});
+// Nietmeer nodig, omdat we de JsonStringEnumConverter manueel toevoegen in enum file.
+// builder.Services.AddControllers().AddJsonOptions(opt =>
+// {
+//     opt.JsonSerializerOptions.Converters.Add(
+//         new JsonStringEnumConverter());
+// });
 
 if (!builder.Environment.IsDevelopment())
 {
@@ -34,21 +34,7 @@ builder.Services.AddDbContext<FrituurTWielDbContext>(options =>
 builder.Services.AddScoped<IProductService, ProductService>();
 builder.Services.AddScoped<IProductRepository, ProductRepository>();
 
-builder.Services.AddOpenApi(options =>
-{
-    options.AddSchemaTransformer((schema, context, cancellationToken) =>
-    {
-        if (context.JsonTypeInfo.Type.IsEnum)
-        {
-            schema.Type = JsonSchemaType.String;
-            schema.Enum = Enum.GetNames(context.JsonTypeInfo.Type)
-                .Select(name => (JsonNode)name)
-                .ToList();
-        }
-        return Task.CompletedTask;
-    });
-});
-
+builder.Services.AddOpenApi();
 var app = builder.Build();
 
 app.MapControllers();
