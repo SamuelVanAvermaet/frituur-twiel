@@ -18,10 +18,13 @@ builder.Services.AddControllers().AddJsonOptions(opt =>
         new JsonStringEnumConverter());
 });
 
-builder.Configuration.AddAzureKeyVault(
-    new Uri("https://frituur-t-wiel-keyvault.vault.azure.net/"),
-    new DefaultAzureCredential()
-);
+if (!builder.Environment.IsDevelopment())
+{
+    builder.Configuration.AddAzureKeyVault(
+        new Uri("https://frituur-t-wiel-keyvault.vault.azure.net/"),
+        new DefaultAzureCredential()
+    );
+}
 
 
 builder.Services.AddDbContext<FrituurTWielDbContext>(options =>
